@@ -1,3 +1,7 @@
+This app is a codecademy full stack course portfolio project, made using React-Redux. 
+
+It uses the reddit api and allows the user to type text into an input field, which results in the retrieval of relevant subreddit posts from the api. The titles of these posts are all rendered on screen and can be clicked on to redirect user to the relevant reddit page.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
