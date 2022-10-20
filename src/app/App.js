@@ -1,12 +1,14 @@
 import React from 'react';
 import {Subreddit} from '../features/subreddit/subreddit';
+import {Articles} from '../features/articles/articles';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header"> */}
         <Subreddit />
-      </header>
+        <Articles />
+      {/* </header> */}
     </div>
   );
 }

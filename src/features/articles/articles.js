@@ -1,40 +1,51 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {setArticles} from './articlesSlice';
+import {storeArticles} from './articlesSlice';
+// import {submitSubreddit} from '../subreddit/subredditSlice';
+// import { Subreddit } from '../subreddit/subreddit';
 
 export function Articles() {
-    const count = useSelector ((state) => state.articles.value);
+    const subreddit = useSelector ((state) => state.subreddit.value);
+    const articles = useSelector ((state) => state.articles);
     const dispatch = useDispatch();
-    const [articles, setArticles] = useState([]);
+    // const [articles, setArticles] = useState([]);
+
+    useEffect(() => {
+        fetch("https://www.reddit.com/r/"+subreddit+".json").then(res =>{
+          if (res.status != 200) {
+            console.log('ERROR!');
+            return;
+          }
+          res.json().then(data => {
+            if (data != null) {
+              //console.log(data); this works
+              // setArticles(data.data.children);
+              dispatch(storeArticles(data.data.children));
+            }
+          })
+        })
+      }, [subreddit])
 
     return (
         <div>
-            <div>
-                <button 
-                    aria-label="Increment value"
-                    onClick={() => dispatch(increment())}
-                >
-                    Increment
-                </button>
-                <span>{count}</span>
-                <button
-                    aria-label="Decrement value"
-                    onClick={() => dispatch(decrement())}
-                >
-                    Decrement
-                </button> 
-                <br>
-                </br>
-                <input 
-                    aria-label="Set increment amount"
-                    value={incrementAmount}
-                    onChange={e => setIncrementAmount(e.target.value)}
-                />
-                <button
-                onClick={() => dispatch(incrementByAmount(Number(incrementAmount) || 0))}
-                >
-                    Add Amount
-                </button>
+            <div className="App">
+                <div className="articles">
+                    { (articles != null)
+                    ? 
+                    (
+                      console.log(articles), //now logging correct arrays
+                    // articles.map((article, index) => <Article key={index} article={article.data}/>)
+                    articles.value.map((article) => {
+                     return <article>
+                              <a href={"https://reddit.com" + article.data.permalink} target="_blank">
+                                <h3>{article.data.title}</h3>
+                              </a>
+                            </article>
+                    }))
+                    :
+                    ''
+                    }
+                </div>
             </div>
         </div>
     )
